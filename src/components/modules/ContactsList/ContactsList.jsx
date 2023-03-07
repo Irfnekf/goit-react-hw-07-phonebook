@@ -2,21 +2,22 @@ import css from './contactsList.module.css';
 
 import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
 
-import { removeContact } from 'redux/contacts/contacts-slice';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchDeleteContacts } from 'redux/contacts/contacts-operations';
 
 const ContactsList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getFilteredContacts);
 
   const deleteContact = id => {
-    dispatch(removeContact(id));
+    dispatch(fetchDeleteContacts(id));
   };
 
-  const item = contacts.map(({ id, name, number }) => (
+  const item = contacts.map(({ id, name, phone }) => (
     <li className={css.contactItem} key={id}>
       <p className={css.name}>
-        {name}: <span className={css.number}>{number}</span>
+        {name}: <span className={css.number}>{phone}</span>
       </p>
       <button
         className={css.deleteButton}
