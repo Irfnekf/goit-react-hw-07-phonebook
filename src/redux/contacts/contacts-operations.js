@@ -26,19 +26,6 @@ export const fetchAddContact = createAsyncThunk(
     } catch ({ response }) {
       return rejectWithValue(response.data);
     }
-  },
-  {
-    condition: ({ name }, { getState }) => {
-      const { contacts } = getState();
-      const normalizedName = name.toLowerCase();
-
-      const contactDubl = contacts.items.find(({ name }) => {
-        return name.toLowerCase() === normalizedName;
-      });
-      if (contactDubl) {
-        return false;
-      }
-    },
   }
 );
 

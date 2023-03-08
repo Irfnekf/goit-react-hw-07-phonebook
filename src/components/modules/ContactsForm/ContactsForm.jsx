@@ -7,7 +7,9 @@ import {
   fetchAddContact,
 } from 'redux/contacts/contacts-operations';
 
-import { useDispatch } from 'react-redux';
+import { selectContacts } from 'redux/contacts/contacts-selectors';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 const ContactsForm = () => {
   const [state, setState] = useState({ ...inititalState });
@@ -18,6 +20,8 @@ const ContactsForm = () => {
     dispatch(fetchAllContacts());
   }, [dispatch]);
 
+  const contacts = useSelector(selectContacts);
+
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState(prevState => {
@@ -27,7 +31,13 @@ const ContactsForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    const isDublicate = contacts.find(
+      contacts => contacts.name.toLowerCase() === state.name.toLowerCase()
+    );
+    if (isDublicate) {
+      alert(`User with name ${state.name} is already in contacts`);
+      return;
+    }
     const result = dispatch(fetchAddContact({ name, phone }));
     if (result) {
       setState({ ...inititalState });
